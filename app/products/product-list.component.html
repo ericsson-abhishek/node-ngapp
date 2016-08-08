@@ -1,0 +1,71 @@
+<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        <!-- I am using interpolation binding here with is an One way binding from the class to the template.
+        Interpolation bindings are read only, and here the template would read data from the class.
+        However it can also invoka a method from the class. and concat values.
+        Note that the interpolation is done via {{}} and we dont require any quotes to refer the class variable
+         -->
+        {{prodList}}
+    </div>
+
+    <div class='panel-body'>
+        <div class='row'>
+            <div class='col-md-2'> Filter By:</div>
+            <div class='col-md-4'>
+                <!-- the follwing is an example of using teo way binding.
+                Two way binding is denoted by [(ngModel)].
+                -->
+                <input type='text' [(ngModel)]='listFilter' />
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-6'>
+                <h3>Filter By: {{listFilter}}</h3>
+            </div>
+        </div>
+
+
+        <div class='table-responsive'>
+            <!-- ngFor, ngIf are the implicite structural( denoted by '*'' at the beginnging) directive available in Angular-->
+            <table class='table' *ngIf='products && products.length'>
+                <thead>
+                    <tr>
+                        <th>
+                            <!-- Here we are using an Event binding, to send the event from tempate to component class.
+                            This is another one way data binding in which the target event is enclosed with brackets, e.g. (click)
+                            Event Binding:
+                            Sends UI events to Component class
+                            -->
+                            <button class='btn  btn-primary' (click)='toggleImage()'>
+                                {{showImage ? 'Hide' : 'Show'}} Image</button>
+                        </th>
+                        <th>Product</th>
+                        <th>Code</th>
+                        <th>Available</th>
+                        <th>Price</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Here we are definging a local variable(#product) inside the *ngFor with '#' before products
+                     variable -->
+                    <tr *ngFor='#product of products'>
+                        <td>
+                            <!-- The following img element has been bound to its component class with property bindings.
+                        The the target property of the element is writen within square brackets, e.g [src].
+                        this is another type of one way binding as interpolation
+                         -->
+                            <img [src]='product.imageUrl' [title]='product.productName' [style.width.px]='imageWidth' [style.margin.px]='imageMargin'
+                                *ngIf='showImage'>
+                        </td>
+                        <td>{{product.productName}}</td>
+                        <td>{{product.productCode|lowercase}}</td>
+                        <td>{{product.releaseDate}}</td>
+                        <td>{{product.price|currency:'USD':true:'1.2-2'}}</td>
+                        <td>{{product.starRating}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
